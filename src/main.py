@@ -17,6 +17,8 @@ optional.add_argument(
     "-s", "--smooth", type=int, help="smooth output image")
 optional.add_argument(
     "-o", "--output", type=str, help="output image path or directory to save images")
+optional.add_argument(
+    "-g", "--glitch", type=int, help="add color glitch to image")
 
 if __name__ == "__main__":
     kernel_size = 0
@@ -43,7 +45,8 @@ if __name__ == "__main__":
                     args.input, filename[:-4] + "_edt" + filename[-4:])
                 if os.path.isdir(output):
                     output = os.path.join(output, filename)
-                Image(file_path, palette, kernel_size).save(output)
+                Image(file_path, palette, kernel_size,
+                      args.glitch).save(output)
             else:
                 continue
     elif os.path.isfile(args.input):
@@ -53,6 +56,6 @@ if __name__ == "__main__":
             if os.path.isdir(output):
                 file_dir, filename = os.path.split(args.input)
                 output = os.path.join(output, filename)
-            Image(args.input, palette, kernel_size).save(output)
+            Image(args.input, palette, kernel_size, args.glitch).save(output)
     else:
         parser.error("input must be a valid file or a directory")
