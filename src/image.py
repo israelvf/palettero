@@ -31,10 +31,8 @@ class Image:
             maxsize = (math.ceil((width/height) *
                                  height_resize), height_resize)
 
-            width_shift = math.ceil((width - maxsize[0])/2)
-            height_shift = math.ceil((height - maxsize[1])/2)
-            left_border = width_shift
-            top_border = height_shift
+            left_border = math.ceil((width - maxsize[0])/2)
+            top_border = math.ceil((height - maxsize[1])/2)
             right_border = maxsize[0] + left_border
             bottom_border = maxsize[1] + top_border
 
@@ -47,6 +45,7 @@ class Image:
             b = b.crop(crop_box)
 
             self.result = Img.merge('RGB', (r, g, b))
+            self.result = self.result.resize((width, height))
         if self.kernel_size > 0:
             np_image = np.asarray(self.result).astype(np.uint8)
             np_image = cv2.GaussianBlur(np_image, self.kernel, 0)
