@@ -39,7 +39,7 @@ if __name__ == "__main__":
         directory = os.fsencode(args.input)
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
-            if filename.endswith(".jpg") or filename.endswith(".png"):
+            if filename.lower().endswith(".jpg") or filename.lower().endswith(".png"):
                 file_path = os.path.join(args.input, filename)
                 output = args.output if args.output else os.path.join(
                     args.input, filename[:-4] + "_edt" + filename[-4:])
@@ -50,7 +50,7 @@ if __name__ == "__main__":
             else:
                 continue
     elif os.path.isfile(args.input):
-        if args.input.endswith(".jpg") or args.input.endswith(".png"):
+        if args.input.lower().endswith(".jpg") or args.input.lower().endswith(".png"):
             output = args.output if args.output else args.input[:-
                                                                 4] + "_edt" + args.input[-4:]
             if os.path.isdir(output):
