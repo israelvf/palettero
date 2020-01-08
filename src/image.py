@@ -21,6 +21,10 @@ class Image:
     def open(self, file_path):
         self.file = Img.open(file_path)
         self.file.convert('RGB')
+        if self.file.mode == 'RGBA':
+            background = Img.new("RGB", self.file.size, (255, 255, 255))
+            background.paste(self.file, mask=self.file.split()[3])
+            self.file = background
 
     def apply(self):
         self.result = self.file.quantize(palette=self.pimage)
