@@ -14,7 +14,7 @@ required.add_argument("-t", "--theme", type=str,
                       help="theme to apply in image", required=True)
 
 optional.add_argument(
-    "-s", "--smooth", type=int, help="smooth output image")
+    "-s", "--smooth", help="smooth output image", action="store_true")
 optional.add_argument(
     "-o", "--output", type=str, help="output image path or directory to save images")
 optional.add_argument(

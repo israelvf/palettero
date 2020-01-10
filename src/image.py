@@ -6,9 +6,8 @@ import math
 
 class Image:
 
-    def __init__(self, file_path, palette, kernel_size, glitch):
-        self.kernel_size = kernel_size
-        self.kernel = (kernel_size, kernel_size)
+    def __init__(self, file_path, palette, smooth, glitch):
+        self.smooth = smooth
         self.glitch = glitch
         self.palette(palette)
         self.open(file_path)
@@ -50,9 +49,9 @@ class Image:
 
             self.result = Img.merge('RGB', (r, g, b))
             self.result = self.result.resize((width, height))
-        if self.kernel_size > 0:
+        if self.smooth:
             np_image = np.asarray(self.result).astype(np.uint8)
-            np_image = cv2.GaussianBlur(np_image, self.kernel, 0)
+            np_image = cv2.bilateralFilter(np_image, 3, 300, 20)
             self.result = Img.fromarray(np_image)
 
     def show(self):
