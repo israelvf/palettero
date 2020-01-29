@@ -2,7 +2,7 @@ import configparser
 from math import sqrt
 
 
-class Theme:
+class ThemeHandler:
 
     def __init__(self, file):
         hex_palette = self.load_palette(file)

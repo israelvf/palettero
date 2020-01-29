@@ -1,5 +1,6 @@
-from theme import Theme
-from image import Image
+from theme_handler import ThemeHandler
+from image_handler import ImageHandler
+from file_handler import FileHandler
 import argparse
 import os
 
@@ -27,29 +28,16 @@ if __name__ == "__main__":
     theme = os.path.join(main_dir, "themes", args.theme)
     if not os.path.isfile(theme):
         parser.error("theme must be a file in themes directory")
-    palette = Theme(theme).palette
-
+    palette = ThemeHandler(theme).palette
+    file = FileHandler(args.input, args.output)
+    path_list = []
     if os.path.isdir(args.input):
-        directory = os.fsencode(args.input)
-        for file in os.listdir(directory):
-            filename = os.fsdecode(file)
-            if filename.lower().endswith((".png", ".jpg", ".jpeg", ".tiff", ".bmp", ".gif")):
-                file_path = os.path.join(args.input, filename)
-                output = args.output if args.output else os.path.join(
-                    args.input, filename.split(".")[0] + "_edt." + filename.split(".")[1])
-                if os.path.isdir(output):
-                    output = os.path.join(output, filename)
-                Image(file_path, palette, args.smooth,
-                      args.glitch).save(output)
-            else:
-                continue
+        path_list = file.get_files_from_folder()
     elif os.path.isfile(args.input):
-        if args.input.lower().endswith((".png", ".jpg", ".jpeg", ".tiff", ".bmp", ".gif")):
-            output = args.output if args.output else args.input.split(
-                ".")[0] + "_edt." + args.input.split(".")[1]
-            if os.path.isdir(output):
-                file_dir, filename = os.path.split(args.input)
-                output = os.path.join(output, filename)
-            Image(args.input, palette, args.smooth, args.glitch).save(output)
+        path_list = file.get_files_from_file()
     else:
         parser.error("input must be a valid file or a directory")
+
+    for input_path, output_path in path_list:
+        ImageHandler(input_path, palette, args.smooth,
+                     args.glitch).save(output_path)
