@@ -19,7 +19,7 @@ class ImageHandler:
 
     def open(self, file_path):
         self.file = Image.open(file_path)
-        self.file.convert('RGB')
+        self.file = self.file.convert('RGB')
         if self.file.mode == 'RGBA':
             background = Image.new("RGB", self.file.size, (255, 255, 255))
             background.paste(self.file, mask=self.file.split()[3])
